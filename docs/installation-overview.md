@@ -1,16 +1,14 @@
 # Installation Overview
 
-This project is documented in a **deployment-agnostic** way.
+This repository focuses on documentation and artifacts, not redeployment automation.
 
 ## Assumptions
-- Wazuh and Shuffle are already deployed (e.g., Docker/Docker Compose).
-- You have a working path for Wazuh to deliver alerts to Shuffle via webhook.
+- Wazuh and Shuffle exist and are operational (e.g., Docker-based deployment).
+- TheHive/Cortex/MISP are integrated at the environment level and reachable by the orchestration layer (when enabled).
+- Secrets/tokens are managed outside Git.
 
-## What is included here
-- Wazuh rules and their intent
-- Shuffle workflow exports
-- Integration steps and expected configurations
-- Demo artifacts (screenshots/video)
-
-## What is not included
-- Full infrastructure-as-code (IaC) redeployments
+## Included artifacts
+- Shuffle workflow exports (JSON)
+- Wazuh rule placeholders (you can add sanitized rules)
+- Documentation covering integrations, workflows, and IR process
+- Evidence: screenshots + demo video link

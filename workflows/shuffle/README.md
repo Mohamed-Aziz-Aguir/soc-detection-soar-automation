@@ -1,5 +1,3 @@
-# Shuffle Workflows
+# Shuffle Workflow Exports
 
-This folder contains exported Shuffle workflow JSON files.
-
-Tip: redact any secrets/tokens before committing.
+This folder contains exported Shuffle workflow JSON files (sanitized). Do not commit secrets.

@@ -1,22 +1,47 @@
 # Architecture
 
-## High-level flow
-1. **Telemetry & Detection**: Wazuh ingests logs and evaluates custom rules.
-2. **Alert Forwarding**: Wazuh triggers a webhook on matching alerts.
-3. **SOAR Orchestration**: Shuffle receives the webhook, normalizes data, enriches context, and decides actions.
-4. **Case/Ticketing**: Shuffle creates a case/ticket and attaches key observables.
-5. **Notifications**: Shuffle alerts stakeholders (email/chat) and logs outcomes for auditability.
+## High-level connections
+- **Wazuh → (Alerts/Webhooks) → Shuffle**
+- **Shuffle → (Case creation/updates) → TheHive**
+- **TheHive → (Triggers analysis) → Cortex**
+- **MISP → (IOC enrichment) → Wazuh & TheHive**
+- **Shuffle → (Notifications) → Discord & Slack**
+- **Shuffle → (Automated response) → Firewall (auto-block malicious IPs)**
 
-## Components
-- **Wazuh**: SIEM/detection, alerting via webhook
-- **Shuffle**: SOAR workflows for routing, enrichment, ticketing, and notifications
-- **(Optional)** TheHive/Cortex/MISP: case mgmt + enrichment (documented if used)
-- **(Optional)** Suricata/pfSense: network telemetry sources
+## Reference diagram (Mermaid)
+```mermaid
+flowchart LR
+    W[Wazuh\nSIEM & Correlation]
+    S[Shuffle\nSOAR]
+    H[TheHive\nCase Management]
+    C[Cortex\nAutomated Analysis]
+    M[MISP\nThreat Intelligence]
+    V[Velociraptor\nEDR (optional)]
+    N[Suricata\nNIDS (optional)]
+    F[Firewall / pfSense (optional)]
+    D[Discord]
+    L[Slack]
 
-## Data contracts
-Define the webhook payload schema and required fields (e.g., rule.id, rule.level, agent.name, srcip, user, etc.).
+    N -->|Network alerts| W
+    V -->|Endpoint telemetry| W
+    M -->|IOC feeds| W
 
-## Security considerations
-- Webhook authentication (shared secret/HMAC) and IP allowlisting
-- Least-privilege API keys for any downstream systems
-- Secret management (no tokens in repo)
+    W -->|Alert webhook| S
+    S -->|Create/Update Case| H
+    H -->|Trigger analyzers| C
+    C -->|Enrichment results| H
+    M -->|IOC enrichment| H
+
+    S -->|Notifications| D
+    S -->|Notifications| L
+    S -->|Auto-block IP (workflow)| F
+```
+
+## Environment context (lab)
+A fully virtualized environment was deployed across multiple network zones (e.g., DMZ, LAN, SOC, IDS, Pentesting) with layered firewalls. The SOC stack integrates SIEM, SOAR, case management, enrichment, and threat intelligence for end-to-end incident handling.
+
+## Design principles
+- Automate repetitive SOC tasks (case creation, enrichment, notifications)
+- Preserve analyst control for high-impact actions unless explicitly safe
+- Standardize case structure, severity mapping, and observables
+- Maintain audit-ready documentation and traceability

@@ -1,3 +1,3 @@
 # Wazuh Rules
 
-Place your `local_rules.xml` snippets or per-rule files here. Remove secrets.
+Place sanitized Wazuh rule files or `local_rules.xml` excerpts here. Remove secrets and internal IPs if needed.

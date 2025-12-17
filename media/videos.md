@@ -1,11 +1,12 @@
 # Demo Videos
 
-Add links to your demo video(s) here.
+## End-to-end SOC & SOAR demonstration
+- YouTube: https://www.youtube.com/watch?v=DYTV5zdeY8U
 
-## Video 1 — End-to-end workflow demo
-- Link: (paste link)
-- Highlights:
-  - 00:00 Webhook received from Wazuh
-  - 00:15 Shuffle parses and maps severity
-  - 00:30 Case/ticket created
-  - 00:45 Notification sent
+### What it shows (high level)
+- SOC operations view (cases, alerts, workflow execution)
+- Example incident flow: detection → orchestration → case handling → notifications
+- Tool health visibility and SOC KPI framing
+- Automated response example: firewall blocking via Shuffle workflow (if shown)
+
+> Note: The dashboard UI is a mock-up for demonstration purposes. The video focuses on the end-to-end concept and workflow behavior.
