@@ -1,0 +1,26 @@
+<!-- Modify it at your will. -->
+<group name="windows,windows_security,">
+  <rule id="100540" level="5" overwrite="yes">
+    <if_sid>60105,60122</if_sid>
+    <field name="win.system.eventID">^529$|^4625$</field>
+    <description>Logon Failure - Unknown user or bad passwords</description>
+    <options>no_full_log</options>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+    <mitre>
+      <id>T1531</id>
+    </mitre>
+  </rule>
+</group>
+<group name="syslog,access_control,">
+  <rule id="100541" level="5" overwrite="yes">
+    <if_sid>2501</if_sid>
+    <match>FAILED LOGIN |authentication failure|</match>
+    <match>Authentication failed for|invalid password for|</match>
+    <match>LOGIN FAILURE|auth failure: |authentication error|</match>
+    <match>authinternal failed|Failed to authorize|</match>
+    <match>Wrong password given for|login failed|Auth: Login incorrect|</match>
+    <match>Failed to authenticate user</match>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+    <description>syslog: User authentication failure.</description>
+  </rule>
+</group>

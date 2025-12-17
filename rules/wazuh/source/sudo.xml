@@ -1,0 +1,13 @@
+<!-- Modify it at your will. -->
+
+<group name="syslog,errors,">
+  <rule id="100567" level="10" overwrite="yes">
+    <if_sid>5400,5407</if_sid>
+    <regex> ; USER=\S+ ; COMMAND=| ; USER=\S+ ; TSID=\S+ ; COMMAND=</regex>
+    <description>Successful sudo executed.</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>pci_dss_10.2.5,pci_dss_10.2.2,gpg13_7.6,gpg13_7.8,gpg13_7.13,gdpr_IV_32.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+</group>

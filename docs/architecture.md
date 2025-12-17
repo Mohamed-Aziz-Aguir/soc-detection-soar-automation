@@ -1,47 +1,27 @@
-# Architecture
+# Architecture (CyberSentinels SOC)
 
-## High-level connections
-- **Wazuh → (Alerts/Webhooks) → Shuffle**
-- **Shuffle → (Case creation/updates) → TheHive**
-- **TheHive → (Triggers analysis) → Cortex**
-- **MISP → (IOC enrichment) → Wazuh & TheHive**
-- **Shuffle → (Notifications) → Discord & Slack**
-- **Shuffle → (Automated response) → Firewall (auto-block malicious IPs)**
+## Core flow (logical)
+- **Wazuh → Shuffle:** Wazuh sends alerts to Shuffle via webhook.
+- **Shuffle → TheHive:** Shuffle creates/updates TheHive cases and attaches observables.
+- **TheHive → Cortex:** TheHive triggers Cortex analyzers; results are added to the case.
+- **MISP → Wazuh & TheHive:** IOC enrichment and correlation.
+- **Shuffle → Discord/Slack:** notifications and escalation.
+- **Shuffle → Firewall:** automated response via IP block workflow (when applicable).
 
-## Reference diagram (Mermaid)
-```mermaid
-flowchart LR
-    W[Wazuh\nSIEM & Correlation]
-    S[Shuffle\nSOAR]
-    H[TheHive\nCase Management]
-    C[Cortex\nAutomated Analysis]
-    M[MISP\nThreat Intelligence]
-    V[Velociraptor\nEDR (optional)]
-    N[Suricata\nNIDS (optional)]
-    F[Firewall / pfSense (optional)]
-    D[Discord]
-    L[Slack]
+## Diagram
+Add your diagram here:
+- `docs/diagrams/architecture.png`
 
-    N -->|Network alerts| W
-    V -->|Endpoint telemetry| W
-    M -->|IOC feeds| W
+(Keep a short caption under it once added.)
 
-    W -->|Alert webhook| S
-    S -->|Create/Update Case| H
-    H -->|Trigger analyzers| C
-    C -->|Enrichment results| H
-    M -->|IOC enrichment| H
+## Severity mapping used
+Based on Wazuh `rule.level`:
+- Low: **0–7**
+- Medium: **8–12**
+- High: **13–16**
 
-    S -->|Notifications| D
-    S -->|Notifications| L
-    S -->|Auto-block IP (workflow)| F
-```
+## Deduplication approach
+To avoid flooding the SOC channels, Shuffle workflows include a counter/guard step to avoid sending repeated notifications for the same recurring attack pattern.
 
 ## Environment context (lab)
-A fully virtualized environment was deployed across multiple network zones (e.g., DMZ, LAN, SOC, IDS, Pentesting) with layered firewalls. The SOC stack integrates SIEM, SOAR, case management, enrichment, and threat intelligence for end-to-end incident handling.
-
-## Design principles
-- Automate repetitive SOC tasks (case creation, enrichment, notifications)
-- Preserve analyst control for high-impact actions unless explicitly safe
-- Standardize case structure, severity mapping, and observables
-- Maintain audit-ready documentation and traceability
+The environment was deployed in a segmented lab (multi-zone networking with firewalls), integrating SIEM, SOAR, case management, enrichment, endpoint visibility, and NIDS tooling.

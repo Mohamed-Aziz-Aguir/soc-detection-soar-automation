@@ -1,40 +1,37 @@
-# SOC Detection & SOAR Automation Portfolio (Wazuh + Shuffle + TheHive + Cortex + MISP)
+# CyberSentinels — SOC Platform (Wazuh + Shuffle + TheHive + Cortex + MISP)
 
-This repository documents an end-to-end SOC pipeline that transforms SIEM detections into incident handling via SOAR orchestration, case management, and automated enrichment.
+CyberSentinels is a student-driven initiative to build and operate a simulated Security Operations Center (SOC) that mirrors real-world enterprise security operations.
 
-**Scope:** This repo provides documentation, configuration artifacts (sanitized), workflow exports, and evidence (screenshots + video). It does **not** provide a one-click redeployment of the entire environment.
+This repository is **upload-ready** and focuses on:
+- Clear documentation (architecture, integrations, workflows, and rules)
+- Exported Shuffle workflows (sanitized)
+- Wazuh custom rules (as provided)
+- Evidence (screenshots + demo video)
 
-## What this project demonstrates
-- **Detection engineering (Wazuh):** custom rules/correlation for events such as SSH brute-force, privilege escalation, and login failures
-- **SOAR automation (Shuffle):** webhook-driven orchestration for alert routing, case handling, notifications, and response actions
-- **Case management (TheHive):** structured incident tracking with tasks/observables (created/updated via Shuffle)
-- **Automated enrichment (Cortex):** analyzers for IP/domain/URL/file enrichment (e.g., VirusTotal, Shodan, DomainTools)
-- **Threat intelligence (MISP):** IOC correlation to enrich Wazuh alerts and TheHive cases
-- **SOC operations thinking:** health visibility, incident lifecycle, and audit-ready documentation
+## What CyberSentinels delivers
+- **Detection (Wazuh):** custom correlation rules for authentication failures, SSH brute-force, PowerShell suspicious activity, file integrity changes, and privilege escalation.
+- **Orchestration (Shuffle):** alert intake from Wazuh via webhook and orchestration of case management, enrichment, notifications, and response.
+- **Case Management (TheHive):** cases created/updated by Shuffle.
+- **Enrichment (Cortex):** analyzers used include VirusTotal, Shodan, and DomainTools.
+- **Threat Intel (MISP):** IOC correlation for Wazuh and TheHive.
+- **Notifications:** Discord and Slack.
+- **Response:** auto-block malicious IPs via a dedicated Shuffle workflow.
 
-## Evidence (Option A)
+## Evidence
 - Screenshots: `media/screenshots/`
 - Demo video: `media/videos.md`
 
-> Note: Any dashboard/UI shown in screenshots is a **mock-up used for demonstration**. Metrics and tool statuses shown are simulated for portfolio purposes.
+> Note: UI screenshots are a **mock-up for portfolio/demo purposes**. Metrics shown are simulated.
 
 ## Architecture
-See `docs/architecture.md` for the full data flow and trust boundaries.
+- Diagram slot: `docs/diagrams/architecture.png` (you will add your own)
+- Documentation: `docs/architecture.md`
 
-## Operational defaults used in this project
-- Severity mapping (Wazuh `rule.level` → severity):
-  - **Low:** 0–7
-  - **Medium:** 8–12
-  - **High:** 13–16
-- Notifications: **Discord** and **Slack**
-- Response: **auto-block malicious IPs** via a dedicated Shuffle workflow
-- Deduplication: implemented in Shuffle using a **counter/guard script** to avoid duplicate executions for the same recurring attack pattern
-
-## Repository map
-- `docs/` — architecture, integrations, detection engineering, SOAR workflow specs, IR process, lessons learned
-- `rules/wazuh/` — Wazuh rule artifacts (sanitized)
-- `workflows/shuffle/` — Shuffle workflow exports (JSON; sanitized)
-- `media/` — screenshots and demo video link
+## Quick start for reviewers
+1. Read `docs/architecture.md` and `docs/integrations.md`
+2. Review Wazuh detections: `docs/wazuh-rules-catalog.md` + `rules/wazuh/source/`
+3. Review SOAR workflows: `docs/soar-workflows.md` + `workflows/shuffle/`
+4. Watch the demo video: `media/videos.md`
 
 ## Security note
-Do not commit secrets/tokens. Store credentials in Shuffle secrets / environment variables and redact exports before publishing.
+Do not commit secrets/tokens. Store credentials in Shuffle secrets / environment variables. Redact internal IPs and usernames if required before publishing.

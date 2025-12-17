@@ -1,0 +1,11 @@
+<!-- Modify it at your will. -->
+
+<group name="ossec,">
+<!-- file modified -->  
+  <rule id="100558" level="8" overwrite="yes">
+    <category>ossec</category>
+    <decoded_as>syscheck_integrity_changed</decoded_as>
+    <description>File modified in a sensetive location.</description>
+    <group>syscheck,syscheck_entry_modified,syscheck_file,pci_dss_11.5,gpg13_4.11,gdpr_II_5.1.f,hipaa_164.312.c.1,hipaa_164.312.c.2,nist_800_53_SI.7,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+</group>

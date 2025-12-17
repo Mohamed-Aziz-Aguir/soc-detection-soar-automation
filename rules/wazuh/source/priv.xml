@@ -1,0 +1,52 @@
+<group name="linux,privilege_changes,">
+  <!-- Sudo Command Execution (Base Rule) -->
+  <rule id="100045" level="7">
+    <if_sid>80700</if_sid>
+    <match>sudo_usage</match>
+    <field name="audit.exe">/usr/bin/sudo</field>
+    <description>Linux: Sudo command executed on $(agent.name) - Command: $(audit.command)</description>
+  </rule>
+
+  <!-- Sudo Sensitive Command Execution -->
+  <rule id="100046" level="12">
+    <if_sid>100045</if_sid>
+    <regex>chmod|chown|useradd|usermod|passwd</regex>
+    <description>Linux: Sudo executed sensitive command on $(agent.name) - Command: $(audit.command)</description>
+  </rule>
+
+  <!-- Successful Change to /etc/sudoers -->
+  <rule id="100047" level="12">
+    <if_sid>80700</if_sid>
+    <match>sudoers_change</match>
+    <description>Linux: Successful change to /etc/sudoers on $(agent.name) by user $(audit.uid) via $(audit.exe)</description>
+  </rule>
+
+  <!-- Setuid Binary Execution -->
+  <rule id="100048" level="10">
+    <if_sid>80700</if_sid>
+    <match>setuid_exec</match>
+    <description>Linux: Setuid binary executed on $(agent.name) - Command: $(audit.command)</description>
+  </rule>
+
+  <!-- Group Membership Change -->
+  <rule id="100049" level="11">
+    <if_sid>80700</if_sid>
+    <match>group_change</match>
+    <description>Linux: User group modified on $(agent.name) - Command: $(audit.command)</description>
+  </rule>
+
+  <!-- Sensitive File Permission Change -->
+  <rule id="100050" level="12">
+    <if_sid>80700</if_sid>
+    <match>sensitive_file_change</match>
+    <description>Linux: Sensitive file permissions changed on $(agent.name) - File: $(audit.file)</description>
+  </rule>
+
+  <!-- Failed Privilege Escalation Attempt -->
+  <rule id="100051" level="8">
+    <if_sid>80700</if_sid>
+    <match>sudo_usage|setuid_exec</match>
+    <field name="audit.success">no</field>
+    <description>Linux: Failed privilege escalation attempt on $(agent.name) - Command: $(audit.command)</description>
+  </rule>
+</group>

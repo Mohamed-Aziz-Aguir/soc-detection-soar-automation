@@ -1,33 +1,21 @@
-# Detection Engineering (Wazuh)
+# Detection Engineering (Wazuh) — CyberSentinels
 
-## Overview
-Custom correlation rules were created to improve detection fidelity and enable automated incident handling.
+## Rule sources
+Your custom rules are stored in `rules/wazuh/source/` as provided.
 
-For each detection, document:
-- Intent (what behavior it detects)
-- Required telemetry/fields
-- MITRE ATT&CK mapping (where applicable)
-- False positives and tuning notes
-- SOAR actions triggered (case creation, enrichment, notifications, response)
+## Catalog
+See `docs/wazuh-rules-catalog.md` for a summarized table of rule IDs, levels, descriptions, and MITRE mappings (where present).
 
-## Example detections covered
-- SSH brute force / repeated login failures
-- Privilege escalation indicators (e.g., sudo usage patterns)
-- Authentication anomalies
-- File integrity events (if enabled)
+## How to load (documentation-only)
+Typical Wazuh locations:
+- `local_rules.xml` for local custom rules
+- Additional XML files can be merged into local rules or included depending on your deployment approach.
 
-## Rule catalog (fill in)
-| Rule ID | Name | Level | Group | MITRE | Triggered workflow |
-|---:|---|---:|---|---|---|
-| {{RULE_ID}} | {{RULE_NAME}} | {{LEVEL}} | {{GROUP}} | {{Txxxx}} | {{WORKFLOW}} |
+> This repository does not enforce a single deployment method; it documents the existing rules and their intended purpose.
 
-## Per-rule template (copy/paste)
-### Rule {{RULE_ID}} — {{RULE_NAME}}
-- **Goal:** {{What it detects}}
-- **Telemetry:** {{Log source(s) and required fields}}
-- **Logic (summary):** {{Conditions / thresholds}}
-- **MITRE:** {{Technique / Sub-technique}}
-- **False positives:** {{Expected benign scenarios}}
-- **Tuning notes:** {{Exclusions / thresholds}}
-- **SOAR actions:** {{Case creation, enrichment, notifications, response}}
-- **Validation:** {{How you tested}}
+## Mapping detections to SOAR
+For each rule you automate, add:
+- the rule ID
+- expected alert fields
+- workflow name (Shuffle)
+- response policy (notify-only vs case + block)
