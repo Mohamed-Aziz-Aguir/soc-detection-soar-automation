@@ -1,6 +1,6 @@
-# Diagrams (you will add these)
+# Diagrams (placeholders)
 
-Place your exported diagrams here (PNG/SVG/PDF). Suggested files:
+Add your exported diagrams here:
 - `architecture.png`
 - `network-zones.png`
 - `workflow-sequence.png`

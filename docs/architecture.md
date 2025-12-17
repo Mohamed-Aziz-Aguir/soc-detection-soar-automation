@@ -1,27 +1,30 @@
-# Architecture (CyberSentinels SOC)
+# Architecture
 
-## Core flow (logical)
-- **Wazuh → Shuffle:** Wazuh sends alerts to Shuffle via webhook.
-- **Shuffle → TheHive:** Shuffle creates/updates TheHive cases and attaches observables.
-- **TheHive → Cortex:** TheHive triggers Cortex analyzers; results are added to the case.
-- **MISP → Wazuh & TheHive:** IOC enrichment and correlation.
-- **Shuffle → Discord/Slack:** notifications and escalation.
-- **Shuffle → Firewall:** automated response via IP block workflow (when applicable).
+## Overview
+CyberSentinels implements an end-to-end SOC pipeline where detections are converted into actionable incident handling using automation and enrichment.
 
-## Diagram
-Add your diagram here:
-- `docs/diagrams/architecture.png`
+### Core flow
+1. **Wazuh → Shuffle**: Wazuh sends alerts to Shuffle via webhook.
+2. **Shuffle → TheHive**: Shuffle creates TheHive **Alerts**, then promotes/creates **Cases** (Alert → Case).
+3. **TheHive → Cortex**: Cortex analyzers are triggered to enrich observables; results are attached back to the case.
+4. **MISP → Wazuh/TheHive**: IOC correlation enriches detections and cases.
+5. **Shuffle → Notifications**: Discord and Slack notifications for SOC awareness and escalation.
+6. **Shuffle → Response**: Conditional response actions based on trigger context:
+   - pfSense blocking
+   - Active Directory actions (when applicable)
+   - Velociraptor quarantine/response (when applicable)
 
-(Keep a short caption under it once added.)
-
-## Severity mapping used
+## Severity mapping
 Based on Wazuh `rule.level`:
-- Low: **0–7**
-- Medium: **8–12**
-- High: **13–16**
+- **Low:** 0–7
+- **Medium:** 8–12
+- **High:** 13–16
 
-## Deduplication approach
-To avoid flooding the SOC channels, Shuffle workflows include a counter/guard step to avoid sending repeated notifications for the same recurring attack pattern.
+## Deduplication
+Workflows implement a guard/counter to avoid duplicate actions for the same recurring event, keyed by:
+- `rule.id + srcip + agent.name`
 
-## Environment context (lab)
-The environment was deployed in a segmented lab (multi-zone networking with firewalls), integrating SIEM, SOAR, case management, enrichment, endpoint visibility, and NIDS tooling.
+## Diagrams (add your own)
+- Architecture: `docs/diagrams/architecture.png`
+- Network zones: `docs/diagrams/network-zones.png`
+- Workflow sequence: `docs/diagrams/workflow-sequence.png`

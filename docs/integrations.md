@@ -1,26 +1,29 @@
-# Integrations (CyberSentinels)
+# Integrations
 
-This repo documents integration logic without exposing secrets.
+This section documents how the platform components exchange signals and context.
 
-## Wazuh → Shuffle (Webhook)
-- **Purpose:** forward selected alerts for orchestration.
-- **Typical payload fields used:** `rule.id`, `rule.level`, `rule.description`, `agent.name`, `agent.ip`, `full_log` plus event-specific fields.
+## Wazuh → Shuffle (Webhook ingestion)
+- Wazuh forwards selected alerts to Shuffle via webhook.
+- Shuffle parses fields used for routing and observables (e.g., `rule.*`, `agent.*`, `data.srcip`, `data.user`, `full_log`).
 
-## Shuffle → TheHive (Case Management)
-- **Purpose:** create/update cases and attach observables.
-- **Case formatting:** standardized title + severity + tags/observables.
-- **Severity mapping:** Low 0–7, Medium 8–12, High 13–16.
+## Shuffle → TheHive (Alert → Case)
+- Shuffle creates a TheHive **Alert** and attaches extracted observables.
+- For higher-confidence events, the Alert is promoted to a **Case** (or Case is created) with tasks and severity applied.
 
 ## TheHive → Cortex (Enrichment)
-- **Purpose:** execute analyzers and attach reports to cases.
-- **Analyzers used (examples):** VirusTotal, Shodan, DomainTools.
+- Cortex analyzers are triggered from TheHive based on observable type and incident category.
+- Analyzers used: **VirusTotal**, **Shodan**, **DomainTools**.
 
-## MISP → Wazuh & TheHive (Threat Intel)
-- **Purpose:** IOC correlation and enrichment for alerts/cases.
+## MISP ↔ Wazuh / TheHive (Threat intelligence)
+- MISP provides IOC context used to enrich Wazuh detections and TheHive cases.
+- IOC matches can influence severity and response decisions (e.g., blocking).
 
-## Shuffle → Discord & Slack (Notifications)
-- **Purpose:** real-time analyst notifications and escalation.
+## Shuffle → Notifications (Discord + Slack)
+- Notifications are posted to Discord and Slack with key incident context and case references.
 
-## Shuffle → Firewall (Automated Response)
-- **Purpose:** auto-block malicious IPs via a dedicated Shuffle workflow.
-- **Control recommendation:** keep an allowlist/denylist and document rollback steps.
+## Shuffle → Response actions (conditional)
+Response depends on trigger category and context:
+- **High-severity threshold** handling
+- **IOC matches** (MISP correlation)
+- Enforcement paths: **pfSense block**, **Active Directory actions**, **Velociraptor quarantine**
+Rollback for testing was performed manually to simulate real ticket-driven operations.

@@ -1,37 +1,30 @@
-# CyberSentinels — SOC Platform (Wazuh + Shuffle + TheHive + Cortex + MISP)
+# CyberSentinels — SOC Platform Documentation
 
-CyberSentinels is a student-driven initiative to build and operate a simulated Security Operations Center (SOC) that mirrors real-world enterprise security operations.
+This repository contains **documentation and reference artifacts** for the CyberSentinels SOC platform: detections, automation workflows, and incident-handling processes.
 
-This repository is **upload-ready** and focuses on:
-- Clear documentation (architecture, integrations, workflows, and rules)
-- Exported Shuffle workflows (sanitized)
-- Wazuh custom rules (as provided)
-- Evidence (screenshots + demo video)
+CyberSentinels was designed as a realistic SOC environment integrating:
+- **Wazuh** (SIEM / correlation)
+- **Shuffle** (SOAR / orchestration)
+- **TheHive** (case management: Alert → Case)
+- **Cortex** (enrichment: VirusTotal, Shodan, DomainTools)
+- **MISP** (threat intelligence IOC correlation)
+- **pfSense** (network enforcement / blocking)
+- **Active Directory** and **Velociraptor** (identity + endpoint response paths)
+- **Discord + Slack** (SOC notifications)
 
-## What CyberSentinels delivers
-- **Detection (Wazuh):** custom correlation rules for authentication failures, SSH brute-force, PowerShell suspicious activity, file integrity changes, and privilege escalation.
-- **Orchestration (Shuffle):** alert intake from Wazuh via webhook and orchestration of case management, enrichment, notifications, and response.
-- **Case Management (TheHive):** cases created/updated by Shuffle.
-- **Enrichment (Cortex):** analyzers used include VirusTotal, Shodan, and DomainTools.
-- **Threat Intel (MISP):** IOC correlation for Wazuh and TheHive.
-- **Notifications:** Discord and Slack.
-- **Response:** auto-block malicious IPs via a dedicated Shuffle workflow.
+> This is a **documentation-first** repository. It is intended for review, learning, and portfolio evidence.
 
 ## Evidence
-- Screenshots: `media/screenshots/`
-- Demo video: `media/videos.md`
+- Screenshots: `assets/screenshots/`
+- Demo video: `docs/demo-video.md` (YouTube link + talk track)
 
-> Note: UI screenshots are a **mock-up for portfolio/demo purposes**. Metrics shown are simulated.
+## Contents
+- `docs/` — architecture, integrations, SOAR workflows, detections, IR playbooks
+- `wazuh/rules/` — Wazuh rule XML files (as used in the project)
+- `shuffle/workflows/` — Shuffle workflow exports (JSON)
 
-## Architecture
-- Diagram slot: `docs/diagrams/architecture.png` (you will add your own)
-- Documentation: `docs/architecture.md`
-
-## Quick start for reviewers
-1. Read `docs/architecture.md` and `docs/integrations.md`
-2. Review Wazuh detections: `docs/wazuh-rules-catalog.md` + `rules/wazuh/source/`
-3. Review SOAR workflows: `docs/soar-workflows.md` + `workflows/shuffle/`
-4. Watch the demo video: `media/videos.md`
-
-## Security note
-Do not commit secrets/tokens. Store credentials in Shuffle secrets / environment variables. Redact internal IPs and usernames if required before publishing.
+## Diagram slots
+Add your own exported diagrams here:
+- `docs/diagrams/architecture.png`
+- `docs/diagrams/network-zones.png`
+- `docs/diagrams/workflow-sequence.png`

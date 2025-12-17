@@ -1,0 +1,12 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets (recommended even for demos)
+.env
+*.key
+*.pem
+
+# Tooling
+node_modules/
+__pycache__/

@@ -1,44 +1,29 @@
-# SOAR Workflows (Shuffle) — CyberSentinels
+# SOAR Workflows (Shuffle)
 
-## Documentation standard
-For each workflow, document:
-- Trigger and input fields
-- Decisioning (severity mapping + dedupe)
-- Actions (TheHive case ops, Cortex analyzers, notifications, firewall block)
-- Failure handling and security controls
+This section documents workflow behavior, inputs, decision logic, and actions.
 
 ## Operational defaults
 - Severity mapping: Low 0–7, Medium 8–12, High 13–16
+- Deduplication key: `rule.id + srcip + agent.name`
 - Notifications: Discord + Slack
-- Deduplication: counter/guard step to avoid duplicate notifications for the same recurring attack pattern
+- Case handling: TheHive Alert → Case
+- Enrichment: Cortex analyzers (VirusTotal, Shodan, DomainTools)
 
-## Workflow exports
-See `workflows/shuffle/`.
+## Workflow catalog
+| File | Purpose | Primary actions |
+|---|---|---|
+| `ssh_login_failed.json` | SSH failures / brute-force | Alert→Case + notify + optional block |
+| `login_attempt.json` | Login attempts | Alert + notify + routing |
+| `sudo_executed.json` | Privilege escalation indicators | Case + enrichment + notify |
+| `windows_privilege_activity.json` | Windows privilege activity | Case + tasks + notify |
+| `file_integrity.json` | File integrity events (add/modify/delete) | Alert→Case + notify |
+| `work_cipher.json` | cipher.exe execution | Alert→Case + notify + optional block |
 
-## Per-workflow template (fill for each workflow)
-### Workflow: {{WORKFLOW_NAME}}
-- **File:** `workflows/shuffle/{{FILE_NAME}}`
-- **Purpose:** {{one sentence}}
+## Workflow specification template (use per workflow)
+### Workflow: {{NAME}}
 - **Trigger:** Wazuh webhook
-- **Wazuh rule(s):** {{rule ids}}
-
-#### Observables extracted
-- IP: {{srcip/dstip}}
-- User: {{user}}
-- Host: {{agent.name}}
-- Command/Process: {{command/process}}
-- URL/Domain: {{url/domain}}
-
-#### Actions
-1. Create/update TheHive case
-2. Add observables and tags
-3. Trigger Cortex analyzers (VirusTotal / Shodan / DomainTools) when applicable
-4. Notify Discord + Slack
-5. Auto-block IP workflow (only when conditions match)
-
-#### Dedupe key (slot)
-- Dedupe key fields: {{e.g., rule.id + agent.name + srcip + 10m window}}
-
-#### Error handling
-- Retries: {{count/backoff}}
-- Fallback: notify SOC channel with failure context
+- **Inputs:** rule.id, rule.level, agent.name, srcip (if present), full_log
+- **Dedupe:** `rule.id + srcip + agent.name`
+- **Decisioning:** severity mapping + IOC match checks + high-severity thresholds
+- **Actions:** TheHive Alert → Case, Cortex analyzers (if applicable), Discord/Slack notify, optional response (pfSense/AD/Velociraptor)
+- **Rollback:** manual unblock/quarantine removal during testing
