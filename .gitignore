@@ -2,11 +2,8 @@
 .DS_Store
 Thumbs.db
 
-# Secrets (recommended even for demos)
-.env
-*.key
-*.pem
-
 # Tooling
-node_modules/
 __pycache__/
+*.pyc
+node_modules/
+.env

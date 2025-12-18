@@ -1,29 +1,27 @@
 # SOAR Workflows (Shuffle)
 
-This section documents workflow behavior, inputs, decision logic, and actions.
-
-## Operational defaults
-- Severity mapping: Low 0–7, Medium 8–12, High 13–16
-- Deduplication key: `rule.id + srcip + agent.name`
-- Notifications: Discord + Slack
-- Case handling: TheHive Alert → Case
-- Enrichment: Cortex analyzers (VirusTotal, Shodan, DomainTools)
+## Standard behavior (project-wide)
+- Create TheHive **Alert**, then promote to **Case** (Alert → Case) based on decision logic.
+- Enrich after case creation using Cortex analyzers (VirusTotal, Shodan, DomainTools) when applicable.
+- Notify Discord and Slack.
+- Conditional response: pfSense block / AD action / Velociraptor quarantine depending on trigger.
+- Deduplication is implemented in some workflows using a guard step (keyed by `rule.id + srcip + agent.name`).
 
 ## Workflow catalog
-| File | Purpose | Primary actions |
-|---|---|---|
-| `ssh_login_failed.json` | SSH failures / brute-force | Alert→Case + notify + optional block |
-| `login_attempt.json` | Login attempts | Alert + notify + routing |
-| `sudo_executed.json` | Privilege escalation indicators | Case + enrichment + notify |
-| `windows_privilege_activity.json` | Windows privilege activity | Case + tasks + notify |
-| `file_integrity.json` | File integrity events (add/modify/delete) | Alert→Case + notify |
-| `work_cipher.json` | cipher.exe execution | Alert→Case + notify + optional block |
+| File | Purpose |
+|---|---|
+| `ssh_login_failed.json` | SSH brute-force / auth failures |
+| `login_attempt.json` | Login attempt routing |
+| `sudo_executed.json` | Linux privilege escalation indicator |
+| `windows_privilege_activity.json` | Windows privilege activity |
+| `file_integrity.json` | File integrity events |
+| `cipher_execution.json` | cipher.exe execution |
 
-## Workflow specification template (use per workflow)
+## Per-workflow template (use for precision)
 ### Workflow: {{NAME}}
-- **Trigger:** Wazuh webhook
-- **Inputs:** rule.id, rule.level, agent.name, srcip (if present), full_log
-- **Dedupe:** `rule.id + srcip + agent.name`
-- **Decisioning:** severity mapping + IOC match checks + high-severity thresholds
-- **Actions:** TheHive Alert → Case, Cortex analyzers (if applicable), Discord/Slack notify, optional response (pfSense/AD/Velociraptor)
-- **Rollback:** manual unblock/quarantine removal during testing
+- Trigger rule(s): {{Wazuh rule IDs}}
+- Dedupe: {{yes/no}} — key `rule.id + srcip + agent.name`
+- Case policy: Alert only vs promote to Case
+- Enrichment: which analyzers and under what condition
+- Response: pfSense/AD/Velociraptor conditions
+- Analyst workflow: what the ticket requires to validate/rollback
