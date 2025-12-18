@@ -1,8 +1,10 @@
-# Custom Python Logic (Slot)
+# Custom Python Utilities
 
-You mentioned custom Python was used to handle repeated tasks and conditions.
-If you still have the script(s), add them here and document:
-- Inputs (payload fields)
-- Decision logic (thresholds, IOC checks, dedupe)
-- Outputs (API calls / workflow triggers)
-- Error handling and retries
+Custom Python was used to support:
+- parsing/normalization of alert payloads
+- deduplication helpers (where workflow-native methods were insufficient)
+- routing decisions
+- response actions (e.g., pfSense rule creation)
+
+Included example:
+- pfsense_block.py — adds a pfSense block rule for a given IP (credentials via environment variables)

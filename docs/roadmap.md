@@ -1,11 +1,6 @@
-# Roadmap
+# Roadmap (Next Improvements)
 
-## Portfolio polish
-- Add per-workflow specifications (inputs, decisioning, response conditions)
-- Document response mapping pfSense vs AD vs Velociraptor per scenario
-- Add an end-to-end walkthrough page with screenshots
-
-## Engineering hardening
-- Standardize deduplication across all workflows
-- Add sample payload replays for regression testing
-- Add rollback runbooks for each response action
+- Implement dedupe consistently across all workflows
+- Add sample payload replay packs for regression testing
+- Add rollback runbooks for pfSense / AD / Velociraptor actions
+- Add per-workflow spec pages (inputs → decisions → outputs) and a sample end-to-end case walkthrough

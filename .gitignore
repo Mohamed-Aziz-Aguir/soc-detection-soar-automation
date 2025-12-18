@@ -2,8 +2,7 @@
 .DS_Store
 Thumbs.db
 
-# Tooling
+# Python
 __pycache__/
 *.pyc
-node_modules/
 .env

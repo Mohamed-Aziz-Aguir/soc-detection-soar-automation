@@ -1,12 +1,10 @@
-# AI Audit Assistant (Optional)
+# AI Audit Assistant (Optional Component)
 
-An optional component provides AI-assisted auditing support:
-- Analyst assistant for **summaries and audit report drafts**
-- Designed for compliance-oriented outputs (reporting), not autonomous response
+An optional AI-assisted auditing component is used as an analyst assistant for:
+- Summaries
+- Audit report drafts
+- Compliance-oriented reporting outputs
 
-## Scope
-- SOC detections and response actions remain rule/workflow-driven
-- AI is used for reporting assistance only (audit/compliance documentation)
-
-## How to include code (if available)
-Place scripts and documentation under `automation/python/`.
+Scope boundary:
+- AI is used for audit/reporting assistance only.
+- Detection and response remain rule/workflow-driven.

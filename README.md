@@ -1,46 +1,42 @@
 # SOC Operations Center — Documentation Repository
 **Creators/Team:** CyberSentinels
 
-This repository documents the **SOC Operations Center** academic project: a realistic internal SOC design with automation, enrichment, and response paths.
+SOC Operations Center is an **academic project** that simulates a realistic internal SOC, demonstrating end-to-end SOC engineering:
+detection → orchestration → case management → enrichment → response → metrics.
 
-It includes:
-- Wazuh custom rules used in the project
+This repository is **documentation-first** and includes the artifacts used in the project:
+- Wazuh rule XML files
 - Shuffle SOAR workflow exports
-- Documentation (architecture, integrations, playbooks, metrics)
+- Process documentation (architecture, response policies, playbooks, metrics)
 - Evidence (screenshots + demo video link)
 
-## High-level capabilities
-- **Detection:** Wazuh correlation rules (Linux + Windows + file integrity)
-- **SOAR:** Shuffle orchestration (severity mapping, routing, partial dedupe, conditional response)
-- **Case management:** TheHive (Alert → Case)
-- **Enrichment:** Cortex analyzers (VirusTotal, Shodan, DomainTools)
-- **Threat intel:** MISP IOC correlation (influences severity/response)
-- **Response paths (conditional):** pfSense blocking, Active Directory actions, Velociraptor quarantine
-- **Notifications:** Discord and Slack
+## What this proves (skills)
+- **Detection engineering:** self-written + modified Wazuh rules, tested and wired to automation
+- **SOAR engineering:** workflow-driven response with thresholds, IOC checks, partial dedupe, and routing logic
+- **IR operations:** Alert→Case handling, triage/investigation assignment, and manual rollback simulation
+- **Security tooling integration:** Wazuh, Shuffle, TheHive, Cortex, MISP, pfSense, AD, Velociraptor, Discord/Slack
 
 ## Evidence
 - Screenshots: `assets/screenshots/`
 - Demo video: `docs/demo-video.md`
 
 ## Diagram slots
-Add your own diagrams here:
+Add your diagrams to:
 - `docs/diagrams/architecture.png`
 - `docs/diagrams/network-zones.png`
 - `docs/diagrams/workflow-sequence.png`
 
-## Repository contents
+## Repository layout
 - `docs/` — documentation (architecture, integrations, workflows, playbooks, metrics, roadmap)
 - `wazuh/rules/` — Wazuh rule XML files
 - `shuffle/workflows/` — Shuffle workflow export JSONs
-- `automation/python/` — documentation slot for the custom Python logic used in handling conditions/repeated tasks
+- `automation/python/` — custom Python utilities (parsing, dedupe, routing, pfSense API calls)
 
-## Defaults used in this project
-- Severity mapping (Wazuh `rule.level`):
-  - Low: 0–7
-  - Medium: 8–12
-  - High: 13–16
-- Dedupe key (where implemented): `rule.id + srcip + agent.name`
-- Enrichment executed **after** case creation (Case then enrich)
+## Key design choices
+- TheHive flow: **Alert → Case**
+- Enrichment: **Case then enrich** (Cortex analyzers)
+- IOC types used: domain / URL / hash / srcip
+- Metrics: **real**, pulled from tool APIs (as used in the project)
 
-## Notes
-This is a **documentation-first** repository created for portfolio and review purposes.
+## Notes on credentials
+Publishing real credentials is unsafe. This repo keeps automation code **production-style** by using environment variables for secrets.

@@ -1,14 +1,14 @@
 # Metrics & SOC KPIs
 
-SOC Operations Center includes a metrics-oriented SOC dashboard (mock-up) intended to present:
-- Alert volume and trends
-- Workflow executions
-- Case counts
-- MTTR proxy (average response time)
-- Tool health and connectivity
+Metrics in SOC Operations Center are real and pulled from tool APIs (as used in the project).
 
-## Recommended metric definitions
-- **MTTD (proxy):** event timestamp → case creation
-- **MTTR (proxy):** case creation → contained/closed
-- **Automation coverage:** % of incidents where enrichment/notification executed automatically
-- **Noise ratio:** alerts per confirmed incident (manual sampling)
+Examples shown in the operations UI:
+- Uptime/health per tool
+- Alert volume and case volume
+- Workflow executions
+- High-level response time metrics (MTTR proxy)
+
+Recommended definitions:
+- MTTD (proxy): event timestamp → case creation
+- MTTR (proxy): case creation → closed/contained
+- Automation coverage: % incidents where enrichment/notifications executed automatically

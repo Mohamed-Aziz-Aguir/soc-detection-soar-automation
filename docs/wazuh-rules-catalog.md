@@ -1,6 +1,6 @@
 # Wazuh Rules Catalog
 
-The rule XML files used by SOC Operations Center are included in `wazuh/rules/` exactly as they were used in the project.
+The rule XML files used by SOC Operations Center are included in `wazuh/rules/`.
 
 | Rule ID | Level | Description | MITRE | Source file |
 |---:|---:|---|---|---|

@@ -1,27 +1,26 @@
 # SOAR Workflows (Shuffle)
 
-## Standard behavior (project-wide)
-- Create TheHive **Alert**, then promote to **Case** (Alert → Case) based on decision logic.
-- Enrich after case creation using Cortex analyzers (VirusTotal, Shodan, DomainTools) when applicable.
-- Notify Discord and Slack.
-- Conditional response: pfSense block / AD action / Velociraptor quarantine depending on trigger.
-- Deduplication is implemented in some workflows using a guard step (keyed by `rule.id + srcip + agent.name`).
+Platform-wide behavior:
+- Create TheHive Alert, then promote to Case (Alert → Case) when conditions match
+- Enrichment occurs after case creation (Cortex analyzers)
+- Notifications sent to Discord + Slack
+- Conditional response paths: pfSense / Active Directory / Velociraptor
 
-## Workflow catalog
-| File | Purpose |
-|---|---|
-| `ssh_login_failed.json` | SSH brute-force / auth failures |
-| `login_attempt.json` | Login attempt routing |
-| `sudo_executed.json` | Linux privilege escalation indicator |
-| `windows_privilege_activity.json` | Windows privilege activity |
-| `file_integrity.json` | File integrity events |
-| `cipher_execution.json` | cipher.exe execution |
+Dedupe (partial):
+- Not all workflows implement dedupe.
+- Where implemented: rule.id + srcip + agent.name
 
-## Per-workflow template (use for precision)
-### Workflow: {{NAME}}
-- Trigger rule(s): {{Wazuh rule IDs}}
-- Dedupe: {{yes/no}} — key `rule.id + srcip + agent.name`
-- Case policy: Alert only vs promote to Case
-- Enrichment: which analyzers and under what condition
-- Response: pfSense/AD/Velociraptor conditions
-- Analyst workflow: what the ticket requires to validate/rollback
+Workflow catalog (curated):
+| File | Category | Typical actions |
+|---|---|---|
+| file_integrity.json | file add/modify/delete | Alert→Case + Discord notify |
+| sudo_executed.json | sudo activity | Case + Velociraptor quarantine + Active Directory action (both) |
+| cipher_execution.json | cipher.exe | Case + pfSense block + Velociraptor lockdown |
+| login_attempt.json | login failures | AD block after 3 failures/3 minutes |
+| ssh_login_failed.json | SSH brute force | Alert→Case + Cortex enrichment + pfSense block |
+| windows_privilege_activity.json | Windows priv activity | Case + containment path depending on trigger |
+
+Enrichment analyzers used:
+- VirusTotal
+- Shodan
+- DomainTools

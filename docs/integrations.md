@@ -2,30 +2,28 @@
 
 ## Wazuh → Shuffle (Webhook ingestion)
 - Wazuh forwards alerts to Shuffle using a webhook integration.
-- Shuffle parses fields for routing and observables (e.g., `rule.*`, `agent.*`, `data.srcip`, `data.user`, `full_log`).
+- Shuffle performs parsing/normalization, routing, and conditional handling (including dedupe for selected workflows).
 
 ## Shuffle → TheHive (Alert → Case)
-- Shuffle creates a TheHive **Alert** first.
-- For medium/high severity and/or IOC matches, the Alert is promoted to a **Case** and enriched with tasks/observables.
+- Shuffle creates a TheHive Alert first.
+- Alert is promoted to a Case when workflow conditions match (e.g., threshold, high-confidence category, IOC match).
 
 ## TheHive → Cortex (Enrichment)
-Analyzers used:
-- VirusTotal
-- Shodan
-- DomainTools
+- Enrichment occurs after case creation.
+- Analyzers used: VirusTotal, Shodan, DomainTools.
 
-Enrichment is performed **after** case creation.
+## MISP IOC correlation
+IOC types used:
+- domain / URL / hash / srcip
 
-## MISP ↔ Wazuh / TheHive (Threat intelligence)
-- IOC matches can increase confidence/severity and trigger additional response steps.
+IOC matches can increase confidence/severity and trigger additional response actions.
 
-## Shuffle → Notifications
-- Discord + Slack are used as SOC channels for notifications and escalation.
+## Notifications
+- Discord + Slack
 
-## Shuffle → Response actions (policy)
-Response actions are considered when one or more conditions are met:
-- High severity threshold: `rule.level >= 13`
-- IOC match via MISP correlation
-- Trigger category (e.g., brute force / privilege activity / suspicious PowerShell)
+## Response integrations (conditional)
+- pfSense: IP blocking / network enforcement
+- Active Directory: user lock/disable and logoff actions (scenario-dependent)
+- Velociraptor: endpoint quarantine/containment (scenario-dependent)
 
-Rollback during testing is manual to simulate a ticket-driven SOC workflow where an analyst validates and reverses actions if needed.
+For **sudo executed** incidents, the response path applies **both**: Active Directory action and Velociraptor quarantine.
