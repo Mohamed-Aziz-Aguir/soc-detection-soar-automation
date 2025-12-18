@@ -23,7 +23,6 @@ It includes:
 - Demo video: `docs/demo-video.md`
 
 ## Diagram slots
-Add your own diagrams here:
 - `docs/diagrams/architecture.png`
 - `docs/diagrams/network-zones.png`
 - `docs/diagrams/workflow-sequence.png`
