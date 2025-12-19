@@ -21,7 +21,6 @@ This repository is **documentation-first** and includes the artifacts used in th
 - Demo video: `docs/demo-video.md`
 
 ## Diagram slots
-Add your diagrams to:
 - `docs/diagrams/architecture.png`
 - `docs/diagrams/network-zones.png`
 - `docs/diagrams/workflow-sequence.png`
