@@ -1,5 +1,7 @@
 # Architecture
 
+https://mohamed-aziz-aguir.github.io/soc-detection-soar-automation/
+
 ## Core data flow
 
 1. Wazuh → Shuffle: Wazuh forwards selected alerts to Shuffle via webhook.
