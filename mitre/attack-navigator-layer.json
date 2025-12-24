@@ -1,0 +1,15 @@
+{
+  "name": "SOC Operations Center (CyberSentinels) - ATT&CK Coverage",
+  "versions": { "attack": "15", "navigator": "4.9.1", "layer": "4.5" },
+  "domain": "enterprise-attack",
+  "description": "Portfolio mapping of implemented detections/workflows to ATT&CK techniques.",
+  "techniques": [
+    { "techniqueID": "T1110", "score": 1, "comment": "SSH brute-force detections and containment" },
+    { "techniqueID": "T1110.001", "score": 1, "comment": "AD password guessing / lockout workflow" },
+    { "techniqueID": "T1068", "score": 1, "comment": "Privilege escalation workflows (Windows/Linux)" },
+    { "techniqueID": "T1548.003", "score": 1, "comment": "Sudo abuse / elevation control mechanism" },
+    { "techniqueID": "T1059.001", "score": 1, "comment": "Encoded PowerShell detection/response" },
+    { "techniqueID": "T1486", "score": 1, "comment": "Cipher.exe (ransomware-like) indicator response" },
+    { "techniqueID": "T1070", "score": 1, "comment": "Indicator removal / file deletion patterns (FIM)" }
+  ]
+}

@@ -1,9 +1,23 @@
-# Cipher.exe Execution Workflow
+# Shuffle Workflow — Cipher.exe Execution
+
+## Purpose
+Automate alert-to-case handling and response actions for **Cipher.exe Execution**, including enrichment and SOC notifications.
 
 ## Trigger
-- Wazuh rule detecting cipher.exe execution
+- Wazuh webhook payload (rule hit / correlation)
 
-## Flow
+## Inputs (expected fields)
+- `rule.id`, `rule.level`, `agent.name`
+- `data.srcip` (when applicable)
+- `data.user` / `win.eventdata.SubjectUserName` (when applicable)
+- Observables: `srcip`, `domain`, `url`, `hash` (depending on detection)
+
+## Processing & decision points
+- Deduplication: suppress repeated identical alerts where configured (count/window logic)
+- Severity gating: 0–7 low, 8–12 medium, 13–16 high (see `soc-process/severity-model.md`)
+- Action gating: auto vs semi-auto vs manual (see `soc-process/response-policy.md`)
+
+## Execution order (as implemented)
 1. Webhook trigger
 2. Delay node
 3. Active Directory: Disable machine/user
@@ -15,5 +29,13 @@
 9. Discord notification
 10. Close case manually
 
-## Purpose
-Detect ransomware-like activity and isolate affected systems.
+## Actions
+- Case management: TheHive alert → case
+- Enrichment: Cortex analyzers (VirusTotal, Shodan, DomainTools as configured)
+- Response: pfSense block / AD lock / Velociraptor quarantine depending on scenario
+- Notifications: Discord + Slack
+
+## References
+- ATT&CK techniques: T1486
+- Workflow export (sanitized): `../exports/cipher-exe.json`
+- Analyst playbook (SOP): `../../soc-process/playbooks/cipher-exe.md`

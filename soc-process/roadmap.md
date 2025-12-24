@@ -1,4 +1,13 @@
-# Roadmap (Next Improvements)
+# Roadmap
+
+- Add consistent dedupe pattern across workflows
+- Add rule test fixtures (sample logs + expected hits)
+- Add workflow sequence diagrams
+- Add ATT&CK Navigator layer
+
+---
+
+## Additional backlog
 
 - Implement dedupe consistently across all workflows
 - Add sample payload replay packs for regression testing

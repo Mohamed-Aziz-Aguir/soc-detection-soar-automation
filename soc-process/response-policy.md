@@ -1,3 +1,43 @@
+# Response Policy (Automation Gates + Scenario Mapping)
+
+This policy defines when response actions run automatically vs requiring analyst confirmation.  
+It also documents the **scenario-by-scenario** behavior implemented in this project.
+
+## Automation gates
+
+### Auto (no approval)
+Used when:
+- High/Critical severity and strong confidence (e.g., brute-force from external IPs)
+- Confirmed IOC matches (MISP/Cortex) for high-risk artifacts
+- Low business impact enforcement actions (e.g., edge firewall block)
+
+Actions may include:
+- pfSense block
+- AD lock/disable (policy-dependent)
+- Velociraptor quarantine
+
+### Semi‑Auto (approval gate)
+Used when:
+- High business impact actions (service/VIP accounts, critical servers)
+- Signal confidence is medium or context-dependent
+
+Pattern:
+- Prepare action + notify analyst
+- Execute upon approval
+
+### Manual
+Used when:
+- Business validation is required
+- Investigation is needed before enforcement
+
+Pattern:
+- Case creation + enrichment + analyst guidance
+
+---
+
+## Implemented scenario mapping
+
+
 # Response Policy (Scenario Mapping)
 
 Rollback/removal was performed manually during testing to simulate ticket-driven operations and analyst verification.

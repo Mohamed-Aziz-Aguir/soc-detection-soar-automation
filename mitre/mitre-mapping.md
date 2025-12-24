@@ -6,7 +6,7 @@ It is intentionally limited to what was built and demonstrated in this project.
 ## Legend
 - **Detection Source**: Wazuh rule / log source
 - **Workflow**: Shuffle SOAR workflow name
-- **Automation**: Auto / Semi‑Auto / Manual (from the project design)
+- **Automation**: Auto / Semi‑Auto / Manual 
 
 ---
 
@@ -18,7 +18,7 @@ It is intentionally limited to what was built and demonstrated in this project.
 | AD login attempts failed (threshold lockout) | Credential Access | **T1110.001 — Password Guessing** | `login-attempt` | Auto |
 | Repeated auth failures suggesting attempted misuse | Defense Evasion / Persistence | **T1078 — Valid Accounts** (attempted / precursor signals) | `login-attempt` | Semi‑Auto* |
 
-\*Semi‑Auto because validation and tuning are analyst-driven; enforcement may be automated in your lab.
+\*Semi‑Auto because validation and tuning are analyst-driven.
 
 ---
 

@@ -12,3 +12,15 @@ Recommended definitions:
 - MTTD (proxy): event timestamp → case creation
 - MTTR (proxy): case creation → closed/contained
 - Automation coverage: % incidents where enrichment/notifications executed automatically
+
+---
+
+## Minimal KPI Set (Summary)
+
+# Metrics & KPIs
+
+Track:
+- MTTD / MTTA / MTTR
+- Cases by severity
+- Automation rate
+- False positive rate (requires disposition tracking)
