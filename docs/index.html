@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberSentinels Architecture | Next-Gen SOC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        primaryColor: '#0a192f',
+        primaryBorderColor: '#64ffda',
+        primaryTextColor: '#ccd6f6',
+        secondaryColor: '#112240',
+        tertiaryColor: '#233554',
+        fontFamily: "'JetBrains Mono', monospace"
+      },
+      flowchart: {
+        useMaxWidth: false,
+        htmlLabels: true,
+        curve: 'basis'
+      }
+    });
+  </script>
+  <style>
+    :root {
+      --neon-blue: #64ffda;
+      --dark-navy: #0a192f;
+      --slate: #8892b0;
+      --light-slate: #ccd6f6;
+      --navy-shadow: rgba(2, 12, 27, 0.7);
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: var(--dark-navy);
+      margin: 0;
+      padding: 0;
+      color: var(--light-slate);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(100, 255, 218, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(100, 255, 218, 0.1) 0%, transparent 50%);
+    }
+
+    .header {
+      width: 100%;
+      padding: 2rem 0;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      background: linear-gradient(to bottom, rgba(10, 25, 47, 0.9) 0%, rgba(10, 25, 47, 0) 100%);
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      color: var(--neon-blue);
+      margin: 0;
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+      position: relative;
+      display: inline-block;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--neon-blue);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s ease;
+    }
+
+    h1:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .subtitle {
+      color: var(--slate);
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      letter-spacing: 3px;
+    }
+
+    .diagram-container {
+      background: rgba(17, 34, 64, 0.5);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(100, 255, 218, 0.2);
+      box-shadow: 
+        0 0 20px rgba(100, 255, 218, 0.1),
+        0 10px 30px var(--navy-shadow);
+      padding: 2rem;
+      width: 90%;
+      max-width: 1400px;
+      margin: 1rem auto 3rem;
+      overflow: auto;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .diagram-container:hover {
+      border-color: rgba(100, 255, 218, 0.4);
+      box-shadow: 
+        0 0 30px rgba(100, 255, 218, 0.2),
+        0 15px 40px var(--navy-shadow);
+    }
+
+    .diagram-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--neon-blue), transparent);
+      animation: scanline 6s linear infinite;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(calc(100vh + 100px)); }
+    }
+
+    .mermaid {
+      font-size: 14px;
+      color: var(--light-slate);
+      min-width: 1000px;
+    }
+
+    .footer {
+      width: 100%;
+      text-align: center;
+      padding: 1.5rem 0;
+      color: var(--slate);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      border-top: 1px solid rgba(100, 255, 218, 0.1);
+      margin-top: auto;
+    }
+
+    .cyber-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(100, 255, 218, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(100, 255, 218, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      .subtitle {
+        font-size: 0.8rem;
+      }
+      .diagram-container {
+        padding: 1rem;
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cyber-grid"></div>
+  
+  <header class="header">
+    <h1>CYBERSENTINELS SOC</h1>
+    <div class="subtitle">THREAT DETECTION & RESPONSE ARCHITECTURE</div>
+  </header>
+
+  <div class="diagram-container">
+    <div class="mermaid">
+      flowchart TB
+        subgraph WAN["🛰️ WAN ZONE"]
+          Internet["🌐 Internet"]
+        end
+
+        subgraph Honeypot["🍯 HONEYPOT ZONE"]
+          Canary["🦜 OpenCanary"]
+        end
+
+        subgraph Pentest["⚔️ PENTEST ZONE"]
+          Kali["🖥️ Kali Linux"]
+        end
+
+        subgraph LAN["🏢 LAN ZONE"]
+          Win["🪟 Windows Machine"]
+          Ubuntu["🐧 Ubuntu Machine"]
+        end
+
+        subgraph FW["🔥 FIREWALL ZONE"]
+          pfA["🛡️ pfSense A"]
+          pfB["🛡️ pfSense B"]
+        end
+
+        subgraph DMZ["🛡️ DMZ ZONE"]
+          Web["🌍 Web Server"]
+          FTP["📁 FTP Server"]
+          Mail["✉️ Mail Server"]
+        end
+
+        subgraph SOC["👁️ SOC ZONE"]
+          logs["📊 Logs from all zones"]
+          Wazuh["🔍 Wazuh"]
+          Suricata["🕵️ Suricata"]
+          Zabbix["📈 Zabbix"]
+          Shuffle["🔄 Shuffle"]
+          Hive["🐝 TheHive"]
+          Cortex["🧠 Cortex"]
+          Misp["🔗 MISP"]
+          Keycloak["🔑 Keycloak"]
+          AD["🏛️ Active Directory"]
+          Discord["🤖 Discord Bot"]
+          Velociraptor["🦖 Velociraptor"]
+        end
+
+        WAN -- Traffic --> pfA
+        pfA -- Filtered Traffic --> pfB
+        Honeypot -- Deception --> pfA
+        Pentest -- Testing --> pfA
+        DMZ -- Public Services --> pfA
+        pfB -- Secured Traffic --> LAN & SOC
+        logs -- Collection --> Wazuh
+        Suricata -- IDS Alerts --> Wazuh
+        Wazuh -- Analysis --> Shuffle
+        Shuffle -- Orchestration --> Hive & Discord
+        Hive <-- Cases --> Cortex
+        Misp <-- Threat Intel --> Hive
+        Keycloak -- Auth --> Wazuh
+        AD -- Auth --> Wazuh
+        Velociraptor -- Forensics --> Wazuh
+
+        classDef wan fill:#1a3a72,stroke:#3a7bd5
+        classDef honeypot fill:#5e2a00,stroke:#ff7b25
+        classDef pentest fill:#6a0000,stroke:#ff3860
+        classDef lan fill:#003d1a,stroke:#00c853
+        classDef fw fill:#4a0000,stroke:#ff5252
+        classDef dmz fill:#003c8f,stroke:#2962ff
+        classDef soc fill:#1a237e,stroke:#536dfe
+        class WAN wan
+        class Honeypot honeypot
+        class Pentest pentest
+        class LAN lan
+        class FW fw
+        class DMZ dmz
+        class SOC soc
+    </div>
+  </div>
+
+  <footer class="footer">
+    CYBERSENTINELS SOC ARCHITECTURE | NEXT-GEN THREAT DETECTION | © 2023
+  </footer>
+
+  <script>
+    // Add a subtle animation effect to the header
+    document.addEventListener('DOMContentLoaded', () => {
+      const header = document.querySelector('h1');
+      let hue = 180;
+      
+      const colorShift = () => {
+        hue = (hue + 0.5) % 360;
+        header.style.textShadow = `0 0 10px hsla(${hue}, 100%, 70%, 0.5)`;
+        requestAnimationFrame(colorShift);
+      };
+      
+      colorShift();
+    });
+  </script>
+</body>
+</html>
